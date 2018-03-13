@@ -110,14 +110,18 @@ class robotiqBaseCModel:
         message = inputMsg.CModel_robot_input()
 
         #Assign the values to their respective variables
-        message.gACT = (status[0] >> 0) & 0x01;        
-        message.gGTO = (status[0] >> 3) & 0x01;
-        message.gSTA = (status[0] >> 4) & 0x03;
-        message.gOBJ = (status[0] >> 6) & 0x03;
-        message.gFLT =  status[2]
-        message.gPR  =  status[3]
-        message.gPO  =  status[4]
-        message.gCU  =  status[5]       
+        try:
+	    message.gACT = (status[0] >> 0) & 0x01;
+            message.gGTO = (status[0] >> 3) & 0x01;
+            message.gSTA = (status[0] >> 4) & 0x03;
+            message.gOBJ = (status[0] >> 6) & 0x03;
+            message.gFLT =  status[2]
+            message.gPR  =  status[3]
+            message.gPO  =  status[4]
+            message.gCU  =  status[5]
+
+	except:
+	    pass
 
         return message
         

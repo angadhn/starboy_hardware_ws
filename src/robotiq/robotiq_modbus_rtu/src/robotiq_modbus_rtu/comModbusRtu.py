@@ -76,8 +76,12 @@ class communication:
       for i in range(0, len(data)/2):
          message.append((data[2*i] << 8) + data[2*i+1])
 
-      #To do!: Implement try/except 
-      self.client.write_registers(0x03E8, message, unit=0x0009)
+      #To do!: Implement try/except
+      try:
+          self.client.write_registers(0x03E8, message, unit=0x0009)
+      except:
+          sleep(.1)
+          pass
 
    def getStatus(self, numBytes):
       """Sends a request to read, wait for the response and returns the Gripper status. The method gets the number of bytes to read as an argument"""
@@ -87,17 +91,22 @@ class communication:
       #Get status from the device
       response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
 
-      while response == None:
-          #sleep(5)
-          #reponse = response_old
-          response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
+#      while response == None or not(hasattr(response, 'getRegister')):
+      #try:
+         #sleep(.001)
+      response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
+      #except ModbusIOException:
+      #    return []
 
       #Instantiate output as an empty list
       output = []
 
       #Fill the output with the bytes in the appropriate order
       for i in range(0, numRegs):
-         output.append((response.getRegister(i) & 0xFF00) >> 8)
+         try:
+             output.append((response.getRegister(i) & 0xFF00) >> 8)
+         except:
+             return []
          output.append( response.getRegister(i) & 0x00FF)
       
       #Output the result
