@@ -92,11 +92,11 @@ class communication:
       response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
 
 #      while response == None or not(hasattr(response, 'getRegister')):
-      #try:
-         #sleep(.001)
-      response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
-      #except ModbusIOException:
-      #    return []
+      try:
+         sleep(.1)
+         response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
+      except:
+          pass
 
       #Instantiate output as an empty list
       output = []

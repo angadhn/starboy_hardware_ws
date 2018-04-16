@@ -119,7 +119,6 @@ class robotiqBaseCModel:
             message.gPR  =  status[3]
             message.gPO  =  status[4]
             message.gCU  =  status[5]
-
 	except:
 	    pass
 
